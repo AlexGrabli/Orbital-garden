@@ -1,0 +1,29 @@
+# Godot 4+ specific ignores
+.godot/
+
+# Импорты и кэш
+.import/
+*.tmp
+
+# Экспорт-пресеты могут содержать пути/подписи — не коммитим
+export.cfg
+export_presets.cfg
+
+# Экспорты и бинарные артефакты
+/android/
+/build/
+/dist/
+/exports/
+*.apk
+*.aab
+*.exe
+*.zip
+*.pck
+
+# Переводы, генерируемые из CSV
+*.translation
+
+# System/tool-specific ignores
+.directory
+*~
+Thumbs.db
