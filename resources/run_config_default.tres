@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RunConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/run_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+day_duration = 120.0
+sunset_duration = 10.0
+night_duration = 90.0
+run_days = 12
