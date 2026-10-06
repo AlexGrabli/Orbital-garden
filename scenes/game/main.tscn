@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scenes/game/main.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/core/phase_machine.gd" id="2"]
 [ext_resource type="Resource" path="res://resources/run_config_default.tres" id="3"]
+[ext_resource type="Script" path="res://scripts/core/input_router.gd" id="4"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
@@ -18,6 +19,9 @@ color = Color(0.05, 0.06, 0.12, 1)
 [node name="PhaseMachine" type="Node" parent="."]
 script = ExtResource("2")
 config = ExtResource("3")
+
+[node name="InputRouter" type="Node" parent="."]
+script = ExtResource("4")
 
 [node name="StartButton" type="Button" parent="."]
 offset_left = 240.0
