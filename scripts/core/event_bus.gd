@@ -33,6 +33,12 @@ signal draft_offered(options: Array[CardResource])
 signal draft_picked(card: CardResource)
 signal card_played(card: CardResource, cell: Vector2i)
 
+# Экономика дня (производители — EconomyManager, PlayController, SunsetView)
+signal resources_changed(energy: int, water: int, biomass: int)
+signal placement_denied(reason: StringName)
+signal sunset_bet_made(mode: StringName, water_spent: int)
+signal card_entity_selected(entity: Node)  # выбор размещённой карты для перемещения
+
 # Сетка станции (производители — GridManager, GridCursor, GridView)
 signal grid_occupant_placed(cell: Vector2i, occupant: Node)
 signal grid_occupant_moved(from: Vector2i, to: Vector2i, occupant: Node)

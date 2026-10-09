@@ -4,6 +4,7 @@ class_name CardEntity extends Node2D
 
 var card: CardResource
 var current_hp: int = 0
+var charge: float = 0.0  # локальный запас (заряды/яйца) — per-entity, НЕ ресурс
 
 
 func setup(p_card: CardResource) -> void:
@@ -12,6 +13,7 @@ func setup(p_card: CardResource) -> void:
 
 
 func _ready() -> void:
+	add_to_group(&"card_entities")
 	# Визуал-плейсхолдер (арт — Фаза 3); размер чуть меньше клетки 32px.
 	var rect := ColorRect.new()
 	rect.size = Vector2(28, 28)

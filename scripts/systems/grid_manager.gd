@@ -25,6 +25,14 @@ func occupant_at(cell: Vector2i) -> Node:
 	return _occupants.get(cell) as Node
 
 
+# Клетка оккупанта (-1, -1, если нет на сетке).
+func cell_of(occupant: Node) -> Vector2i:
+	for cell: Vector2i in _occupants:
+		if _occupants[cell] == occupant:
+			return cell
+	return Vector2i(-1, -1)
+
+
 func place(cell: Vector2i, occupant: Node) -> bool:
 	if not is_buildable(cell):
 		return false

@@ -46,6 +46,11 @@ func _run() -> void:
 	var controller: Node = load("res://scripts/systems/play_controller.gd").new()
 	controller.grid = _grid
 	controller.deck = _deck
+	var economy: Node = load("res://scripts/systems/economy_manager.gd").new()
+	economy.config = _deck.config
+	root.add_child(economy)
+	controller.economy = economy
+	controller.config = _deck.config
 	root.add_child(controller)
 	await process_frame
 

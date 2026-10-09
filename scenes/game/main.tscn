@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scenes/game/main.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/core/phase_machine.gd" id="2"]
@@ -13,6 +13,10 @@
 [ext_resource type="Script" path="res://scripts/systems/play_controller.gd" id="11"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hand_view.tscn" id="12"]
 [ext_resource type="PackedScene" path="res://scenes/ui/draft_view.tscn" id="13"]
+[ext_resource type="Script" path="res://scripts/systems/economy_manager.gd" id="14"]
+[ext_resource type="Script" path="res://scripts/systems/day_effects.gd" id="15"]
+[ext_resource type="PackedScene" path="res://scenes/ui/resources_bar.tscn" id="16"]
+[ext_resource type="PackedScene" path="res://scenes/ui/sunset_view.tscn" id="17"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
@@ -52,6 +56,25 @@ config = ExtResource("3")
 script = ExtResource("11")
 grid = NodePath("../GridManager")
 deck = NodePath("../DeckManager")
+economy = NodePath("../EconomyManager")
+config = ExtResource("3")
+
+[node name="EconomyManager" type="Node" parent="."]
+script = ExtResource("14")
+config = ExtResource("3")
+
+[node name="DayEffects" type="Node" parent="."]
+script = ExtResource("15")
+economy = NodePath("../EconomyManager")
+
+[node name="ResourcesBar" parent="." instance=ExtResource("16")]
+offset_left = 8.0
+offset_top = 8.0
+
+[node name="SunsetView" parent="." instance=ExtResource("17")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="HandView" parent="." instance=ExtResource("12")]
 anchors_preset = 12
