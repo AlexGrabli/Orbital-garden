@@ -7,8 +7,9 @@ extends Node2D
 
 func _ready() -> void:
 	_build_cells()
-	EventBus.input_place_card.connect(_on_pointer)  # ЛКМ/драг (press)
+	EventBus.input_pointer_released.connect(_on_pointer)  # ЛКМ (release)
 	EventBus.input_tapped.connect(_on_pointer)  # тач-тап
+	# input_place_card (press) — задел под драг, сейчас не используется.
 
 
 # Цвета — визуал-плейсхолдер (арт появится в Фазе 3).

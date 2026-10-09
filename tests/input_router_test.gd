@@ -1,7 +1,7 @@
 extends SceneTree
 ## Тест InputRouter: события устройств → сигналы EventBus, зеркалирование биндингов.
 ## Запуск: godot --headless -s res://tests/input_router_test.gd
-## Паттерн как в phase_machine_test: шина из дерева, роутер через load(),
+## Паттерн как в предыдущих тестах: шина из дерева, роутер через load(),
 ## результаты лямбд — только append в массив.
 
 var _failures: int = 0
@@ -54,26 +54,38 @@ func _run() -> void:
 	await process_frame
 
 	var log: Array[StringName] = []
+	var confirm_sources: Array = []
 	var cursor_dirs: Array = []
 	var place_positions: Array = []
-	_bus.connect("input_confirmed", func() -> void: log.append(&"confirm"))
+	var released_positions: Array = []
+	var tapped: Array = []
+	_bus.connect("input_confirmed",
+		func(source: StringName) -> void:
+			log.append(&"confirm")
+			confirm_sources.append(source))
 	_bus.connect("input_cancelled", func() -> void: log.append(&"cancel"))
 	_bus.connect("input_active_ability", func() -> void: log.append(&"ability"))
 	_bus.connect("input_cursor_moved", func(dir: Vector2i) -> void: cursor_dirs.append(dir))
 	_bus.connect("input_place_card", func(pos: Vector2) -> void: place_positions.append(pos))
+	_bus.connect("input_pointer_released", func(pos: Vector2) -> void: released_positions.append(pos))
+	_bus.connect("input_tapped", func(pos: Vector2) -> void: tapped.append(pos))
 
-	# 1. InputEventAction(confirm) → input_confirmed
+	# 1. InputEventAction(confirm) → input_confirmed(&"cursor")
 	var act := InputEventAction.new()
 	act.action = &"confirm"
 	act.pressed = false
 	await _send(act)
-	_check(log == [&"confirm"], "InputEventAction(confirm) не дал input_confirmed: %s" % [log])
+	_check(log == [&"confirm"] and confirm_sources == [&"cursor"],
+		"InputEventAction(confirm) не дал input_confirmed(cursor): %s %s" % [log, confirm_sources])
 	log.clear()
+	confirm_sources.clear()
 
-	# 2. Клавиатура: Enter (release) → confirm, Esc → cancel, F → active_ability
+	# 2. Клавиатура: Enter (release) → confirm(cursor), Esc → cancel, F → active_ability
 	await _send(_key(KEY_ENTER, false))
-	_check(log == [&"confirm"], "Enter не дал input_confirmed: %s" % [log])
+	_check(log == [&"confirm"] and confirm_sources == [&"cursor"],
+		"Enter не дал input_confirmed(cursor): %s %s" % [log, confirm_sources])
 	log.clear()
+	confirm_sources.clear()
 	await _send(_key(KEY_ESCAPE, true))
 	_check(log == [&"cancel"], "Esc не дал input_cancelled: %s" % [log])
 	log.clear()
@@ -81,12 +93,14 @@ func _run() -> void:
 	_check(log == [&"ability"], "F не дал input_active_ability: %s" % [log])
 	log.clear()
 
-	# 3. Геймпад: A press → place_card, A release → confirm, B → cancel
+	# 3. Геймпад: A press → place_card, A release → confirm(cursor), B → cancel
 	await _send(_joy_button(JOY_BUTTON_A, true))
 	_check(place_positions.size() == 1, "кнопка A (press) не дала input_place_card")
 	await _send(_joy_button(JOY_BUTTON_A, false))
-	_check(log == [&"confirm"], "кнопка A (release) не дала input_confirmed: %s" % [log])
+	_check(log == [&"confirm"] and confirm_sources == [&"cursor"],
+		"кнопка A (release) не дала input_confirmed(cursor): %s" % [log])
 	log.clear()
+	confirm_sources.clear()
 	await _send(_joy_button(JOY_BUTTON_B, true))
 	_check(log == [&"cancel"], "кнопка B не дала input_cancelled: %s" % [log])
 	log.clear()
@@ -99,32 +113,30 @@ func _run() -> void:
 	_check(cursor_dirs == [Vector2i.UP], "стик вверх не дал курсор UP: %s" % [cursor_dirs])
 	cursor_dirs.clear()
 
-	# 5. Тач: тап → input_tapped с позицией + input_confirmed (паритет UI)
-	var tapped: Array = []
-	_bus.connect("input_tapped", func(pos: Vector2) -> void: tapped.append(pos))
+	# 5. Тач: тап → input_tapped с позицией (без дубля confirm)
 	var touch := InputEventScreenTouch.new()
 	touch.pressed = true
 	touch.position = Vector2(320, 180)
 	await _send(touch)
-	_check(log == [&"confirm"], "тап не дал input_confirmed: %s" % [log])
+	_check(log.is_empty(), "тап дублирует input_confirmed: %s" % [log])
 	var expected_tap: Vector2 = root.get_screen_transform().affine_inverse() * Vector2(320, 180)
 	_check(tapped.size() == 1 and tapped[0].is_equal_approx(expected_tap),
 		"тап не дал input_tapped с позицией: %s" % [tapped])
-	log.clear()
 
-	# 6. Мышь: ПКМ → cancel, ЛКМ press → place_card с позицией, ЛКМ release → confirm
+	# 6. Мышь: ПКМ → cancel, ЛКМ press → place_card с позицией,
+	#    ЛКМ release → input_pointer_released (не confirm)
 	await _send(_mouse_button(MOUSE_BUTTON_RIGHT, true, Vector2(10, 10)))
 	_check(log == [&"cancel"], "ПКМ не дала input_cancelled: %s" % [log])
 	log.clear()
 	# Движок трансформирует координаты окна в canvas-координаты (stretch).
 	var expected_pos: Vector2 = root.get_screen_transform().affine_inverse() * Vector2(100, 50)
 	await _send(_mouse_button(MOUSE_BUTTON_LEFT, true, Vector2(100, 50)))
-	var got_pos: Vector2 = place_positions[1] if place_positions.size() == 2 else Vector2(-1, -1)
-	_check(place_positions.size() == 2 and got_pos.is_equal_approx(expected_pos),
-		"ЛКМ (press) не дала input_place_card с позицией: %s != %s" % [place_positions, expected_pos])
+	_check(place_positions.size() == 2 and place_positions[1].is_equal_approx(expected_pos),
+		"ЛКМ (press) не дала input_place_card с позицией: %s" % [place_positions])
 	await _send(_mouse_button(MOUSE_BUTTON_LEFT, false, Vector2(100, 50)))
-	_check(log == [&"confirm"], "ЛКМ (release) не дала input_confirmed: %s" % [log])
-	log.clear()
+	_check(log.is_empty(), "ЛКМ (release) дала input_confirmed: %s" % [log])
+	_check(released_positions.size() == 1 and released_positions[0].is_equal_approx(expected_pos),
+		"ЛКМ (release) не дала input_pointer_released: %s" % [released_positions])
 
 	# 7. Зеркалирование: у каждого действия биндинги минимум двух классов устройств.
 	for action: StringName in [

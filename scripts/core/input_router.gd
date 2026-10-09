@@ -15,13 +15,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		var touch := event as InputEventScreenTouch
 		if touch.pressed:
-			EventBus.input_tapped.emit(touch.position)  # позиция для сетки
-			# TODO(задача 4): убрать дубль — сетка перейдёт на input_tapped.
-			EventBus.input_confirmed.emit()  # паритет UI (старт забега тапом)
+			EventBus.input_tapped.emit(touch.position)
 			get_viewport().set_input_as_handled()
 		return
 	if event is InputEventScreenDrag:
-		return # драг по сетке и картам — задача 3
+		return # драг по сетке и картам — задача 8 / Фаза 4
 
 	for action: StringName in _CURSOR_DIRS:
 		if event.is_action_pressed(action):
@@ -29,11 +27,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 
-	# press = place_card, release = confirm (ЛКМ и кнопка A общие)
+	# press = place_card (задел под драг), release = выбор.
 	if event.is_action_pressed(&"place_card"):
 		EventBus.input_place_card.emit(_event_position(event))
 	elif event.is_action_released(&"confirm"):
-		EventBus.input_confirmed.emit()
+		if event is InputEventMouse:
+			EventBus.input_pointer_released.emit((event as InputEventMouse).position)
+		else:
+			EventBus.input_confirmed.emit(&"cursor")
 	elif event.is_action_pressed(&"cancel"):
 		EventBus.input_cancelled.emit()
 	elif event.is_action_pressed(&"active_ability"):

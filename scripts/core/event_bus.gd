@@ -17,11 +17,21 @@ signal core_destroyed
 
 # Ввод (единственный производитель — InputRouter)
 signal input_cursor_moved(direction: Vector2i)
-signal input_confirmed
+signal input_confirmed(source: StringName)  # &"cursor" (клава/геймпад)
 signal input_cancelled
-signal input_place_card(screen_pos: Vector2)
+signal input_place_card(screen_pos: Vector2)  # press — задел под драг
+signal input_pointer_released(screen_pos: Vector2)  # ЛКМ release — выбор
 signal input_active_ability
-signal input_tapped(screen_pos: Vector2)  # тач-тап с позицией (для сетки/UI)
+signal input_tapped(screen_pos: Vector2)  # тач-тап с позицией
+
+# Рука и колода (производители — DeckManager, HandView, GridCursor)
+signal hand_changed(hand: Array[CardResource])
+signal hand_card_selected(card: CardResource)
+signal hand_index_selected(index: int)  # курсор в строке руки
+signal deck_count_changed(count: int)
+signal draft_offered(options: Array[CardResource])
+signal draft_picked(card: CardResource)
+signal card_played(card: CardResource, cell: Vector2i)
 
 # Сетка станции (производители — GridManager, GridCursor, GridView)
 signal grid_occupant_placed(cell: Vector2i, occupant: Node)

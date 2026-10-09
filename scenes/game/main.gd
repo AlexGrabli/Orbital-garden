@@ -6,7 +6,8 @@ extends Node2D
 
 func _ready() -> void:
 	_start_button.pressed.connect(_on_start_pressed)
-	EventBus.input_confirmed.connect(_on_input_confirmed)
+	EventBus.input_confirmed.connect(_on_menu_confirm)  # клавиатура/геймпад
+	EventBus.input_tapped.connect(_on_menu_tap)  # тач
 
 
 func _on_start_pressed() -> void:
@@ -14,7 +15,15 @@ func _on_start_pressed() -> void:
 	_start_button.hide()
 
 
-# Паритет для геймпада/тача: confirm стартует забег, пока кнопка видна.
-func _on_input_confirmed() -> void:
+# Паритет для геймпада/тача: старт забега, пока кнопка видна (временно, до HUD).
+func _on_menu_confirm(_source: StringName) -> void:
+	_try_start()
+
+
+func _on_menu_tap(_pos: Vector2) -> void:
+	_try_start()
+
+
+func _try_start() -> void:
 	if _start_button.visible:
 		_on_start_pressed()

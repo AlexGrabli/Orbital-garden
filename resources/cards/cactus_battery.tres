@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/effect_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/data/card_resource.gd" id="2"]
+
+[sub_resource type="Resource" id="day_fx"]
+script = ExtResource("1")
+type = &"generate"
+value = 12.0
+conditions = {
+&"resource": &"energy",
+&"mode": &"store"
+}
+
+[sub_resource type="Resource" id="night_fx"]
+script = ExtResource("1")
+type = &"damage"
+radius = 3.0
+conditions = {
+&"scaling": &"stored_energy",
+&"spread": true
+}
+
+[resource]
+script = ExtResource("2")
+id = &"cactus_battery"
+name = "Кактус-Батарея"
+flavor_text = "Колючий аккумулятор. Днём молчит, ночью светится."
+tags = [&"био", &"растение", &"энергия"]
+cost_water = 2
+hp = 30
+rarity = 0
+day_property = &"none"
+day_effect = SubResource("day_fx")
+night_effect = SubResource("night_fx")

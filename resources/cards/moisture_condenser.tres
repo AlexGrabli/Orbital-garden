@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/effect_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/data/card_resource.gd" id="2"]
+
+[sub_resource type="Resource" id="day_fx"]
+script = ExtResource("1")
+type = &"generate"
+value = 3.0
+conditions = {
+&"resource": &"water"
+}
+
+[sub_resource type="Resource" id="night_fx"]
+script = ExtResource("1")
+type = &"heal"
+value = 2.0
+radius = 1.0
+cooldown = 5.0
+conditions = {
+&"targets": &"plant"
+}
+
+[resource]
+script = ExtResource("2")
+id = &"moisture_condenser"
+name = "Конденсатор влаги"
+flavor_text = "Пьёт росу, лечит грядки."
+tags = [&"мех", &"экономика"]
+cost_energy = 1
+hp = 20
+rarity = 0
+day_property = &"none"
+day_effect = SubResource("day_fx")
+night_effect = SubResource("night_fx")

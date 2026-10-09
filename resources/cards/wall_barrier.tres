@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CardResource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/effect_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/data/card_resource.gd" id="2"]
+
+[sub_resource type="Resource" id="night_fx"]
+script = ExtResource("1")
+type = &"taunt"
+conditions = {
+&"blocks_path": true
+}
+
+[resource]
+script = ExtResource("2")
+id = &"wall_barrier"
+name = "Силовая стена"
+flavor_text = "Переставь меня до заката — двигаюсь бесплатно."
+tags = [&"мех", &"стена"]
+cost_water = 1
+cost_energy = 1
+hp = 60
+rarity = 0
+day_property = &"free_move"
+night_effect = SubResource("night_fx")

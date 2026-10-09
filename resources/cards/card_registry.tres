@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardRegistry" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/card_registry.gd" id="1"]
+[ext_resource type="CardResource" path="res://resources/cards/turret_laser.tres" id="2"]
+[ext_resource type="CardResource" path="res://resources/cards/wall_barrier.tres" id="3"]
+[ext_resource type="CardResource" path="res://resources/cards/solar_panel.tres" id="4"]
+[ext_resource type="CardResource" path="res://resources/cards/moisture_condenser.tres" id="5"]
+[ext_resource type="CardResource" path="res://resources/cards/cactus_battery.tres" id="6"]
+[ext_resource type="CardResource" path="res://resources/cards/chicken_incubator.tres" id="7"]
+
+[resource]
+script = ExtResource("1")
+cards = [ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), ExtResource("7")]
+starter_deck_ids = [&"turret_laser", &"wall_barrier", &"solar_panel", &"moisture_condenser", &"cactus_battery", &"chicken_incubator"]

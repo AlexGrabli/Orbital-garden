@@ -8,3 +8,5 @@ day_duration = 120.0
 sunset_duration = 10.0
 night_duration = 90.0
 run_days = 12
+hand_draw_size = 3
+hand_limit = 5

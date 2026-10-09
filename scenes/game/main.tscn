@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scenes/game/main.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/core/phase_machine.gd" id="2"]
@@ -8,6 +8,11 @@
 [ext_resource type="Resource" path="res://resources/grid_layout_default.tres" id="6"]
 [ext_resource type="PackedScene" path="res://scenes/game/grid_view.tscn" id="7"]
 [ext_resource type="Script" path="res://scripts/systems/grid_cursor.gd" id="8"]
+[ext_resource type="Resource" path="res://resources/cards/card_registry.tres" id="9"]
+[ext_resource type="Script" path="res://scripts/systems/deck_manager.gd" id="10"]
+[ext_resource type="Script" path="res://scripts/systems/play_controller.gd" id="11"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hand_view.tscn" id="12"]
+[ext_resource type="PackedScene" path="res://scenes/ui/draft_view.tscn" id="13"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
@@ -37,6 +42,30 @@ layout = ExtResource("6")
 [node name="GridCursor" type="Node2D" parent="."]
 script = ExtResource("8")
 layout = ExtResource("6")
+
+[node name="DeckManager" type="Node" parent="."]
+script = ExtResource("10")
+registry = ExtResource("9")
+config = ExtResource("3")
+
+[node name="PlayController" type="Node" parent="."]
+script = ExtResource("11")
+grid = NodePath("../GridManager")
+deck = NodePath("../DeckManager")
+
+[node name="HandView" parent="." instance=ExtResource("12")]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -48.0
+offset_bottom = -4.0
+alignment = 1
+
+[node name="DraftView" parent="." instance=ExtResource("13")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="StartButton" type="Button" parent="."]
 offset_left = 240.0
