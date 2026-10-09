@@ -21,8 +21,9 @@ Roguelite deck-building + tower defense + cozy farm. Движок: **Godot 4.x, 
 
 * Задача 1 — Day/Night state machine: **выполнена** (`scripts/core/phase_machine.gd` + фазы, `EventBus`, `RunState`, `resources/run_config_default.tres`, тест `tests/phase_machine_test.gd` зелёный).
 * Задача 2 — абстракция ввода: **выполнена** (`InputRouter`, action map в `project.godot`, сигналы `input_*` в `EventBus`, тест `tests/input_router_test.gd` зелёный).
-* Задача 3 — сетка станции 4×4 (текущая).
-* Далее по docs/03: колода и рука, экономика дня, wave manager, auto-battle минимум, HUD, сохранение.
+* Задача 3 — сетка станции 4×4: **выполнена** (`GridLayout` + `resources/grid_layout_default.tres`, `GridManager`, `GridCursor`, `scenes/game/grid_view.tscn`, тест `tests/grid_test.gd` зелёный).
+* Задача 4 — колода и рука (текущая).
+* Далее по docs/03: экономика дня, wave manager, auto-battle минимум, HUD, сохранение.
 
 ## Команды
 
@@ -58,6 +59,7 @@ tests/       docs/
 
 * Автозагрузы регистрируются **после** компиляции скрипта-раннера: прямой идентификатор `EventBus`/`RunState` в раннере не компилируется. Раннер берёт шину через `root.get_node("EventBus")`, а скрипты с `class\_name`-зависимостями грузит через `load()` в рантайме. В обычном запуске игры проблемы нет — это касается только тестов-раннеров.
 * Лямбды GDScript захватывают локальные переменные **по значению**: сбор результатов из сигналов — только `append` в массив, не переприсваивание.
+* Координаты кликов в событиях приходят в canvas-координатах (движок трансформирует из оконных из-за stretch `canvas\_items`): ожидаемую позицию в тесте считать через `root.get_screen_transform().affine_inverse() * window_pos`.
 
 ## Стиль кода
 

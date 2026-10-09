@@ -99,12 +99,17 @@ func _run() -> void:
 	_check(cursor_dirs == [Vector2i.UP], "стик вверх не дал курсор UP: %s" % [cursor_dirs])
 	cursor_dirs.clear()
 
-	# 5. Тач: тап → input_confirmed
+	# 5. Тач: тап → input_tapped с позицией + input_confirmed (паритет UI)
+	var tapped: Array = []
+	_bus.connect("input_tapped", func(pos: Vector2) -> void: tapped.append(pos))
 	var touch := InputEventScreenTouch.new()
 	touch.pressed = true
 	touch.position = Vector2(320, 180)
 	await _send(touch)
 	_check(log == [&"confirm"], "тап не дал input_confirmed: %s" % [log])
+	var expected_tap: Vector2 = root.get_screen_transform().affine_inverse() * Vector2(320, 180)
+	_check(tapped.size() == 1 and tapped[0].is_equal_approx(expected_tap),
+		"тап не дал input_tapped с позицией: %s" % [tapped])
 	log.clear()
 
 	# 6. Мышь: ПКМ → cancel, ЛКМ press → place_card с позицией, ЛКМ release → confirm

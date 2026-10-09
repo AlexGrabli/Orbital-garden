@@ -13,8 +13,11 @@ const _CURSOR_DIRS: Dictionary = {
 func _unhandled_input(event: InputEvent) -> void:
 	# Тач маппится вручную (эмуляция мыши из тача выключена в проекте).
 	if event is InputEventScreenTouch:
-		if (event as InputEventScreenTouch).pressed:
-			EventBus.input_confirmed.emit() # тап = подтверждение
+		var touch := event as InputEventScreenTouch
+		if touch.pressed:
+			EventBus.input_tapped.emit(touch.position)  # позиция для сетки
+			# TODO(задача 4): убрать дубль — сетка перейдёт на input_tapped.
+			EventBus.input_confirmed.emit()  # паритет UI (старт забега тапом)
 			get_viewport().set_input_as_handled()
 		return
 	if event is InputEventScreenDrag:

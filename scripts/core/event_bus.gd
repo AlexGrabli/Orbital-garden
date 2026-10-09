@@ -21,3 +21,11 @@ signal input_confirmed
 signal input_cancelled
 signal input_place_card(screen_pos: Vector2)
 signal input_active_ability
+signal input_tapped(screen_pos: Vector2)  # тач-тап с позицией (для сетки/UI)
+
+# Сетка станции (производители — GridManager, GridCursor, GridView)
+signal grid_occupant_placed(cell: Vector2i, occupant: Node)
+signal grid_occupant_moved(from: Vector2i, to: Vector2i, occupant: Node)
+signal grid_occupant_removed(cell: Vector2i, occupant: Node)
+signal grid_cell_confirmed(cell: Vector2i)
+signal grid_selection_cancelled
