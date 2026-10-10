@@ -12,6 +12,7 @@ var _bet_pending: bool = false
 
 
 func _ready() -> void:
+	add_to_group(&"savable")
 	EventBus.run_start_requested.connect(_on_run_start)
 	EventBus.sunset_started.connect(_on_sunset_started)
 	EventBus.sunset_bet_made.connect(_on_sunset_bet)
@@ -104,3 +105,20 @@ func _apply_bet(mode: StringName, water_spent: int) -> void:
 
 func _emit() -> void:
 	EventBus.resources_changed.emit(energy, water, biomass)
+
+
+# --- сохранение (группа savable) --------------------------------------
+
+func save_key() -> StringName:
+	return &"economy"
+
+
+func get_save_data() -> Dictionary:
+	return {"energy": energy, "water": water, "biomass": biomass}
+
+
+func apply_save_data(d: Dictionary) -> void:
+	energy = int(d.get("energy", energy))
+	water = int(d.get("water", water))
+	biomass = int(d.get("biomass", biomass))
+	_emit()

@@ -27,12 +27,14 @@ Roguelite deck-building + tower defense + cozy farm. Движок: **Godot 4.x, 
 * Задача 6 — wave manager: **выполнена** (`EnemyResource`/`SpawnEntry`/`WaveScenario`/`WaveSchedule`, враги .tres, 3 рукописные волны + расписание с клампом, `WaveManager` + `EnemyEntity`, тест `tests/wave_test.gd` зелёный).
 * Задача 7 — auto-battle минимум: **выполнена** (`StationCore` с HP из RunConfig, движение/рукопашка/прорыв у врагов, `NightEffects` — damage/heal/ночной convert, `night_completed` — ранняя зачистка ночи, тест `tests/battle_test.gd` зелёный).
 * Задача 8 — HUD: **выполнена** (`hud.tscn` — CanvasLayer ALWAYS, safe area через `DisplayServer.get_display_safe_area`, день/фаза/прогноз/HP Ядра/пауза; HandView/DraftView/SunsetView/ResourcesBar внутри; старт забега — кнопка HUD на фазе меню; тест `tests/hud_test.gd` зелёный).
-* Задача 9 — сохранение (текущая).
-* Далее по docs/03: headless-скелет-тест (задача 10).
+* Задача 9 — сохранение: **выполнена** (`SaveSystem` — третий и последний autoload; чекпоинт на рассвете в `user://save.json`, `save_version` + миграции + бэкап битых файлов + атомарная запись; мета-биомасса между забегами; кнопка «Продолжить» в HUD; тест `tests/save_test.gd` зелёный).
+* Задача 10 — headless-скелет-тест (текущая).
+* Это последняя задача Фазы 1 по docs/03.
 
 ## Известные долги (не блокеры)
 
 * **D-pad/стик двигают и курсор сетки, и UI-фокус одновременно** — принято в задаче 8; явная маршрутизация режимов (геймплей/UI) — Фаза 4.
+* **Node-экспорты в рукописных .tscn не резолвятся** — паттерн проекта: `@export var X_path: NodePath` + `get_node()` в `_ready` (см. StationCore). Прямое `@export var node: Класс` работает только из сцен, сохранённых редактором.
 
 ## Команды
 
@@ -76,6 +78,7 @@ tests/       docs/
 * Автозагрузы (EventBus, RunState) нельзя `queue_free()` при чистке дерева в тестах — это не тестовые узлы.
 * Мгновенные переходы фаз (`night→dawn→day` за кадр) нельзя ловить опросом `current_id` между кадрами — собирать лог через сигнал `phase_changed`.
 * Подключение к сигналу **во время его эмиссии** не доставляет эмиссию новому подписчику: состояние фаз читать через флаги `RunState` (например, `night_active`), события — через сигналы `EventBus`.
+* В рукописных `.tscn` Node-экспорты (`@export var grid: GridManager`) **не резолвятся** в узлы (поведение Godot 4.7) — ссылки на узлы только через `@export var grid_path: NodePath` + `get_node()` в `_ready`. Ресурсные экспорты (`Resource`/`.tres`) работают нормально. В headless-прогонах следить за счётчиком SCRIPT ERROR — должен быть 0.
 
 ## Стиль кода
 

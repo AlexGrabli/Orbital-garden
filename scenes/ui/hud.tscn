@@ -38,6 +38,11 @@ visible = false
 custom_minimum_size = Vector2(72, 24)
 text = "Начать забег"
 
+[node name="ContinueButton" type="Button" parent="SafeMargins/Layout/TopBar"]
+visible = false
+custom_minimum_size = Vector2(72, 24)
+text = "Продолжить"
+
 [node name="EndDayButton" type="Button" parent="SafeMargins/Layout/TopBar"]
 visible = false
 custom_minimum_size = Vector2(64, 24)

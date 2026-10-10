@@ -19,6 +19,7 @@ var _entity_scene: PackedScene = preload("res://scenes/entities/card_entity.tscn
 
 
 func _ready() -> void:
+	add_to_group(&"savable")
 	if grid_path != NodePath(""):
 		grid = get_node(grid_path) as GridManager
 		deck = get_node(deck_path) as DeckManager
@@ -84,3 +85,48 @@ func _try_move(cell: Vector2i) -> void:
 func _clear_selection() -> void:
 	_selected_card = null
 	_selected_entity = null
+
+
+# --- сохранение (группа savable) --------------------------------------
+
+func save_key() -> StringName:
+	return &"grid"
+
+
+# Размещённые карты (Ядро — не CardEntity, не попадает).
+func get_save_data() -> Array:
+	var cells: Array = []
+	for y in grid.layout.grid_size.y:
+		for x in grid.layout.grid_size.x:
+			var cell := Vector2i(x, y)
+			var entity := grid.occupant_at(cell) as CardEntity
+			if entity == null or entity.card == null:
+				continue
+			cells.append({
+				"cell": [cell.x, cell.y],
+				"card": String(entity.card.id),
+				"hp": entity.current_hp,
+				"charge": entity.charge,
+			})
+	return cells
+
+
+# Восстановление чекпоинта: размещение без списания стоимости.
+func apply_save_data(cells: Array) -> void:
+	for entry: Dictionary in cells:
+		var card: CardResource = deck.registry.find(StringName(entry.get("card", "")))
+		if card == null:
+			push_warning("PlayController: карта '%s' не в ростере, клетка пропущена" % [entry.get("card")])
+			continue
+		var pos: Array = entry.get("cell", [0, 0])
+		var cell := Vector2i(int(pos[0]), int(pos[1]))
+		if not grid.is_buildable(cell):
+			push_warning("PlayController: клетка %s недоступна, карта пропущена" % [cell])
+			continue
+		var entity: CardEntity = _entity_scene.instantiate()
+		entity.setup(card)
+		entity.current_hp = int(entry.get("hp", card.hp))
+		entity.charge = float(entry.get("charge", 0.0))
+		add_child(entity)
+		entity.position = grid.layout.cell_rect(cell).get_center()
+		grid.place(cell, entity)

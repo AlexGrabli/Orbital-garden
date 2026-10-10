@@ -14,6 +14,7 @@ var max_hp: int = 0
 
 func _ready() -> void:
 	add_to_group(&"station_core")
+	add_to_group(&"savable")
 	if grid_path != NodePath(""):
 		grid = get_node(grid_path) as GridManager
 	max_hp = config.core_hp
@@ -27,6 +28,21 @@ func _ready() -> void:
 
 func _register_on_grid() -> void:
 	grid.place(layout.core_cell, self)
+
+
+# --- сохранение (группа savable) --------------------------------------
+
+func save_key() -> StringName:
+	return &"core"
+
+
+func get_save_data() -> Dictionary:
+	return {"hp": hp}
+
+
+func apply_save_data(d: Dictionary) -> void:
+	hp = clampi(int(d.get("hp", max_hp)), 0, max_hp)
+	EventBus.core_hp_changed.emit(hp, max_hp)
 
 
 # Новый забег — Ядро восстанавливается.

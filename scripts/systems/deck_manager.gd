@@ -10,6 +10,7 @@ var hand: Array[CardResource] = []
 
 
 func _ready() -> void:
+	add_to_group(&"savable")
 	EventBus.run_start_requested.connect(start_run)
 	EventBus.day_started.connect(_on_day_started)
 	EventBus.dawn_started.connect(_on_dawn_started)
@@ -76,3 +77,37 @@ func _on_run_ended(_victory: bool, _day: int) -> void:
 func _emit_state() -> void:
 	EventBus.hand_changed.emit(hand)
 	EventBus.deck_count_changed.emit(deck.size())
+
+
+# --- сохранение (группа savable) --------------------------------------
+
+func save_key() -> StringName:
+	return &"deck"
+
+
+func get_save_data() -> Dictionary:
+	var deck_ids: Array = []
+	for card: CardResource in deck:
+		deck_ids.append(String(card.id))
+	var hand_ids: Array = []
+	for card: CardResource in hand:
+		hand_ids.append(String(card.id))
+	return {"deck": deck_ids, "hand": hand_ids}
+
+
+func apply_save_data(d: Dictionary) -> void:
+	deck.clear()
+	for id: String in d.get("deck", []):
+		var card := registry.find(StringName(id))
+		if card == null:
+			push_warning("DeckManager: карта '%s' не в ростере, пропуск" % [id])
+			continue
+		deck.append(card)
+	hand.clear()
+	for id: String in d.get("hand", []):
+		var card := registry.find(StringName(id))
+		if card == null:
+			push_warning("DeckManager: карта '%s' не в ростере, пропуск" % [id])
+			continue
+		hand.append(card)
+	_emit_state()

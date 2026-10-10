@@ -20,6 +20,7 @@ const _DIRECTIONS: Dictionary = {
 @onready var _forecast_label: Label = $SafeMargins/Layout/TopBar/ForecastLabel
 @onready var _core_label: Label = $SafeMargins/Layout/TopBar/CoreLabel
 @onready var _start_button: Button = $SafeMargins/Layout/TopBar/StartButton
+@onready var _continue_button: Button = $SafeMargins/Layout/TopBar/ContinueButton
 @onready var _end_day_button: Button = $SafeMargins/Layout/TopBar/EndDayButton
 @onready var _pause_button: Button = $SafeMargins/Layout/TopBar/PauseButton
 @onready var _overlay: CenterContainer = $PauseOverlay
@@ -33,6 +34,7 @@ func _ready() -> void:
 	EventBus.phase_changed.connect(_on_phase_changed)
 	EventBus.run_ended.connect(_on_run_ended)
 	_start_button.pressed.connect(func() -> void: EventBus.run_start_requested.emit())
+	_continue_button.pressed.connect(func() -> void: SaveSystem.request_continue())
 	_end_day_button.pressed.connect(func() -> void: EventBus.day_completed.emit())
 	_pause_button.pressed.connect(_on_pause_pressed)
 	_resume_button.pressed.connect(_on_resume_pressed)
@@ -57,6 +59,7 @@ func _on_core_hp_changed(hp: int, max_hp: int) -> void:
 func _on_phase_changed(new_phase: StringName, day_number: int) -> void:
 	_day_label.text = "День %d из %d" % [day_number, config.run_days]
 	_start_button.visible = new_phase == &"main_menu"
+	_continue_button.visible = new_phase == &"main_menu" and SaveSystem.has_run()
 	_end_day_button.visible = new_phase == &"day"
 	match new_phase:
 		&"day":
