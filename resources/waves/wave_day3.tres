@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="WaveScenario" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/spawn_entry.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/data/wave_scenario.gd" id="2"]
+[ext_resource type="Resource" path="res://resources/enemies/swarm_runner.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/enemies/swarm_brute.tres" id="4"]
+
+[sub_resource type="Resource" id="first"]
+script = ExtResource("1")
+delay = 0.0
+enemy = ExtResource("3")
+count = 3
+spacing = 0.7
+
+[sub_resource type="Resource" id="second"]
+script = ExtResource("1")
+delay = 4.0
+enemy = ExtResource("4")
+count = 2
+spacing = 2.0
+
+[resource]
+script = ExtResource("2")
+id = &"wave_day3"
+direction = 1
+spawns = [SubResource("first"), SubResource("second")]

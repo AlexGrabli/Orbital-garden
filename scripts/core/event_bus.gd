@@ -39,6 +39,11 @@ signal placement_denied(reason: StringName)
 signal sunset_bet_made(mode: StringName, water_spent: int)
 signal card_entity_selected(entity: Node)  # выбор размещённой карты для перемещения
 
+# Волны (производитель — WaveManager; прогноз радара читает те же данные)
+signal wave_started(day: int, scenario: WaveScenario)
+signal enemy_spawned(enemy: Node)
+signal wave_spawns_finished(day: int)  # очередь спавнов исчерпана (конец ночи — задача 7)
+
 # Сетка станции (производители — GridManager, GridCursor, GridView)
 signal grid_occupant_placed(cell: Vector2i, occupant: Node)
 signal grid_occupant_moved(from: Vector2i, to: Vector2i, occupant: Node)

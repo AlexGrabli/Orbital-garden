@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemyResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_resource.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"swarm_brute"
+name = "Рой: Танк"
+hp = 40
+speed = 25.0
+core_damage = 3
+tags = [&"рой", &"танк"]

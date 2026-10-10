@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scenes/game/main.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/core/phase_machine.gd" id="2"]
@@ -17,6 +17,8 @@
 [ext_resource type="Script" path="res://scripts/systems/day_effects.gd" id="15"]
 [ext_resource type="PackedScene" path="res://scenes/ui/resources_bar.tscn" id="16"]
 [ext_resource type="PackedScene" path="res://scenes/ui/sunset_view.tscn" id="17"]
+[ext_resource type="Script" path="res://scripts/systems/wave_manager.gd" id="18"]
+[ext_resource type="Resource" path="res://resources/waves/wave_schedule.tres" id="19"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
@@ -66,6 +68,11 @@ config = ExtResource("3")
 [node name="DayEffects" type="Node" parent="."]
 script = ExtResource("15")
 economy = NodePath("../EconomyManager")
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("18")
+schedule = ExtResource("19")
+layout = ExtResource("6")
 
 [node name="ResourcesBar" parent="." instance=ExtResource("16")]
 offset_left = 8.0

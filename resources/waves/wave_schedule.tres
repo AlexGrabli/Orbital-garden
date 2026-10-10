@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="WaveSchedule" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/wave_schedule.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/waves/wave_day1.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/waves/wave_day2.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/waves/wave_day3.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+waves = [ExtResource("2"), ExtResource("3"), ExtResource("4")]

@@ -24,8 +24,9 @@ Roguelite deck-building + tower defense + cozy farm. Движок: **Godot 4.x, 
 * Задача 3 — сетка станции 4×4: **выполнена** (`GridLayout` + `resources/grid_layout_default.tres`, `GridManager`, `GridCursor`, `scenes/game/grid_view.tscn`, тест `tests/grid_test.gd` зелёный).
 * Задача 4 — колода и рука: **выполнена** (`CardResource`/`EffectData`/`CardRegistry`, 6 стартовых карт .tres + реестр, `DeckManager`, `PlayController`, `CardEntity`, `HandView`, `DraftView`, тесты `card_contract_test.gd` и `deck_test.gd` зелёные).
 * Задача 5 — ресурсы и экономика дня: **выполнена** (`EconomyManager`, `DayEffects` — утренний сбор generate/convert, оплата размещения/перемещения в `PlayController` (free_move у стены), ставка заката `SunsetView` с AFK-дефолтом РОСТ, `ResourcesBar`, тест `tests/economy_test.gd` зелёный).
-* Задача 6 — wave manager (текущая).
-* Далее по docs/03: auto-battle минимум, HUD, сохранение.
+* Задача 6 — wave manager: **выполнена** (`EnemyResource`/`SpawnEntry`/`WaveScenario`/`WaveSchedule`, враги .tres, 3 рукописные волны + расписание с клампом, `WaveManager` + `EnemyEntity`, тест `tests/wave_test.gd` зелёный).
+* Задача 7 — auto-battle минимум (текущая).
+* Далее по docs/03: HUD, сохранение.
 
 ## Команды
 
