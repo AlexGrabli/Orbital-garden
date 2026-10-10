@@ -32,6 +32,7 @@ func _ready() -> void:
 		_phases[phase.id] = phase
 	EventBus.run_start_requested.connect(_on_run_start_requested)
 	EventBus.day_completed.connect(_on_day_completed)
+	EventBus.night_completed.connect(_on_night_completed)
 	EventBus.core_destroyed.connect(_on_core_destroyed)
 	_enter(&"main_menu")
 
@@ -66,6 +67,13 @@ func _on_run_start_requested() -> void:
 func _on_day_completed() -> void:
 	if current_id == &"day":
 		transition_to(&"sunset")
+
+
+func _on_night_completed() -> void:
+	# Зачистка волны: ночь заканчивается раньше таймера.
+	if current_id == &"night":
+		EventBus.night_ended.emit(RunState.day_number, false)
+		transition_to(&"dawn")
 
 
 func _on_core_destroyed() -> void:

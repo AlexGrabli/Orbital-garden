@@ -44,6 +44,11 @@ signal wave_started(day: int, scenario: WaveScenario)
 signal enemy_spawned(enemy: Node)
 signal wave_spawns_finished(day: int)  # очередь спавнов исчерпана (конец ночи — задача 7)
 
+# Бой (производители — StationCore, EnemyEntity, NightEffects)
+signal night_completed  # зачистка волны — ранний конец ночи
+signal core_hp_changed(hp: int, max_hp: int)
+signal card_destroyed(entity: Node, cell: Vector2i)
+
 # Сетка станции (производители — GridManager, GridCursor, GridView)
 signal grid_occupant_placed(cell: Vector2i, occupant: Node)
 signal grid_occupant_moved(from: Vector2i, to: Vector2i, occupant: Node)

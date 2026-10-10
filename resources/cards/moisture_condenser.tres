@@ -18,7 +18,7 @@ value = 2.0
 radius = 1.0
 cooldown = 5.0
 conditions = {
-&"targets": &"plant"
+&"targets": &"растение"
 }
 
 [resource]

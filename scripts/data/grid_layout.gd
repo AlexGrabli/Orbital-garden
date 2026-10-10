@@ -6,6 +6,7 @@ enum Terrain { NORMAL, ROCK, DIRT }  # неудобные клетки: каме
 @export var grid_size: Vector2i = Vector2i(4, 4)
 @export var cell_size: int = 32
 @export var origin: Vector2 = Vector2(48, 88)  # левый верх сетки на экране 640×360
+@export var core_cell: Vector2i = Vector2i(1, 1)  # клетка Ядра станции
 @export var blocked_cells: Dictionary = {}  # Vector2i → Terrain (пусто = всё NORMAL)
 
 

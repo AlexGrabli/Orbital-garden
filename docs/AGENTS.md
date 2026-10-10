@@ -25,8 +25,9 @@ Roguelite deck-building + tower defense + cozy farm. Движок: **Godot 4.x, 
 * Задача 4 — колода и рука: **выполнена** (`CardResource`/`EffectData`/`CardRegistry`, 6 стартовых карт .tres + реестр, `DeckManager`, `PlayController`, `CardEntity`, `HandView`, `DraftView`, тесты `card_contract_test.gd` и `deck_test.gd` зелёные).
 * Задача 5 — ресурсы и экономика дня: **выполнена** (`EconomyManager`, `DayEffects` — утренний сбор generate/convert, оплата размещения/перемещения в `PlayController` (free_move у стены), ставка заката `SunsetView` с AFK-дефолтом РОСТ, `ResourcesBar`, тест `tests/economy_test.gd` зелёный).
 * Задача 6 — wave manager: **выполнена** (`EnemyResource`/`SpawnEntry`/`WaveScenario`/`WaveSchedule`, враги .tres, 3 рукописные волны + расписание с клампом, `WaveManager` + `EnemyEntity`, тест `tests/wave_test.gd` зелёный).
-* Задача 7 — auto-battle минимум (текущая).
-* Далее по docs/03: HUD, сохранение.
+* Задача 7 — auto-battle минимум: **выполнена** (`StationCore` с HP из RunConfig, движение/рукопашка/прорыв у врагов, `NightEffects` — damage/heal/ночной convert, `night_completed` — ранняя зачистка ночи, тест `tests/battle_test.gd` зелёный).
+* Задача 8 — HUD (текущая).
+* Далее по docs/03: сохранение.
 
 ## Команды
 
@@ -65,6 +66,8 @@ tests/       docs/
 * Координаты кликов в событиях приходят в canvas-координатах (движок трансформирует из оконных из-за stretch `canvas\_items`): ожидаемую позицию в тесте считать через `root.get_screen_transform().affine_inverse() * window_pos`.
 * Новый `class_name` требует пересканирования классов: `godot --headless --editor --quit`, иначе в `-s` тестах класс «не найден» (и раннер молча висит, т.к. падает до `quit()` — при зависшем тесте проверять это первым).
 * Enum в GDScript 4 не callable: `Terrain(x)` не компилируется — приведение через таблицу значений.
+* Типизированные `Array[...]` в экспортах нельзя присваивать из неподписанных литералов в `-s` раннерах — только наполнять через `.append()`.
+* Группы ищутся через `get_nodes_in_group()` на `SceneTree`, а не на `root`.
 
 ## Стиль кода
 

@@ -9,4 +9,6 @@ name = "Рой: Бегун"
 hp = 10
 speed = 60.0
 core_damage = 1
+attack_damage = 2
+attack_cooldown = 1.0
 tags = [&"рой", &"бегун"]

@@ -16,6 +16,7 @@ conditions = {
 script = ExtResource("1")
 type = &"damage"
 radius = 3.0
+cooldown = 1.0
 conditions = {
 &"scaling": &"stored_energy",
 &"spread": true

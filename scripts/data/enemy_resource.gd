@@ -7,4 +7,6 @@ class_name EnemyResource extends Resource
 @export var hp: int
 @export var speed: float  # px/сек (движение — задача 7)
 @export var core_damage: int  # урон Ядру при прорыве (задача 7)
+@export var attack_damage: int = 1  # урон по картам в рукопашке
+@export var attack_cooldown: float = 1.0  # секунд между ударами
 @export var tags: Array[StringName] = []  # рой, бегун, танк...

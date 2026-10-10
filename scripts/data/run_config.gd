@@ -16,3 +16,4 @@ class_name RunConfig extends Resource
 @export var sunset_heal_per_water: int = 2  # РОСТ: HP ремонта за 1 воду
 @export var sunset_ammo_per_water: int = 2  # БОЕПРИПАСЫ: зарядов за 1 воду
 @export var dawn_biomass_reward: int = 1  # награда рассвета
+@export var core_hp: int = 20  # HP Ядра станции (поражение при 0)

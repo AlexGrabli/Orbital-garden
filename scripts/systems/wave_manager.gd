@@ -5,6 +5,8 @@ class_name WaveManager extends Node
 
 @export var schedule: WaveSchedule
 @export var layout: GridLayout
+@export var grid: GridManager  # для рукопашки врагов
+@export var core: StationCore  # цель движения врагов
 
 var _queue: Array = []  # [{time, enemy, serial}]
 var _elapsed: float = 0.0
@@ -96,6 +98,7 @@ func _edge_offset(serial: int, cells: int) -> float:
 func _spawn(enemy_res: EnemyResource, serial: int) -> void:
 	var entity: EnemyEntity = _enemy_scene.instantiate()
 	entity.setup(enemy_res)
+	entity.bind(layout, grid, core)
 	add_child(entity)
 	entity.position = _spawn_point(serial)
 	EventBus.enemy_spawned.emit(entity)

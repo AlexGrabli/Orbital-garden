@@ -17,3 +17,4 @@ move_cost_energy = 1
 sunset_heal_per_water = 2
 sunset_ammo_per_water = 2
 dawn_biomass_reward = 1
+core_hp = 20

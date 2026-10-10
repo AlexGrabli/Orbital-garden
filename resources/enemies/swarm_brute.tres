@@ -9,4 +9,6 @@ name = "Рой: Танк"
 hp = 40
 speed = 25.0
 core_damage = 3
+attack_damage = 6
+attack_cooldown = 1.5
 tags = [&"рой", &"танк"]

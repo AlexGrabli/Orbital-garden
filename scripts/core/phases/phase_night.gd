@@ -10,7 +10,12 @@ func _init() -> void:
 
 func enter(config: RunConfig) -> void:
 	_time_left = config.night_duration
+	RunState.night_active = true  # источник истины для врагов (спавн во время эмиссии)
 	EventBus.night_started.emit(RunState.day_number)
+
+
+func exit() -> void:
+	RunState.night_active = false
 
 
 func update(delta: float) -> void:
