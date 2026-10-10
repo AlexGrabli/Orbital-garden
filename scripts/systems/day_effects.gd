@@ -2,10 +2,14 @@ class_name DayEffects extends Node
 ## Интерпретатор дневных эффектов: утренний сбор (day_started).
 ## Исполняются generate и convert; прочие типы — пропуск (их время — Фаза 2).
 
-@export var economy: EconomyManager
+@export var economy_path: NodePath  # путь + get_node (см. StationCore)
+
+var economy: EconomyManager = null
 
 
 func _ready() -> void:
+	if economy_path != NodePath(""):
+		economy = get_node(economy_path) as EconomyManager
 	EventBus.day_started.connect(_on_day_started)
 
 

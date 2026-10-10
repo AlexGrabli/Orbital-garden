@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scenes/game/main.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/core/phase_machine.gd" id="2"]
@@ -11,15 +11,12 @@
 [ext_resource type="Resource" path="res://resources/cards/card_registry.tres" id="9"]
 [ext_resource type="Script" path="res://scripts/systems/deck_manager.gd" id="10"]
 [ext_resource type="Script" path="res://scripts/systems/play_controller.gd" id="11"]
-[ext_resource type="PackedScene" path="res://scenes/ui/hand_view.tscn" id="12"]
-[ext_resource type="PackedScene" path="res://scenes/ui/draft_view.tscn" id="13"]
-[ext_resource type="Script" path="res://scripts/systems/economy_manager.gd" id="14"]
-[ext_resource type="Script" path="res://scripts/systems/day_effects.gd" id="15"]
-[ext_resource type="PackedScene" path="res://scenes/ui/resources_bar.tscn" id="16"]
-[ext_resource type="PackedScene" path="res://scenes/ui/sunset_view.tscn" id="17"]
-[ext_resource type="Script" path="res://scripts/systems/wave_manager.gd" id="18"]
-[ext_resource type="Resource" path="res://resources/waves/wave_schedule.tres" id="19"]
-[ext_resource type="PackedScene" path="res://scenes/entities/station_core.tscn" id="20"]
+[ext_resource type="Script" path="res://scripts/systems/economy_manager.gd" id="12"]
+[ext_resource type="Script" path="res://scripts/systems/day_effects.gd" id="13"]
+[ext_resource type="Script" path="res://scripts/systems/wave_manager.gd" id="14"]
+[ext_resource type="Resource" path="res://resources/waves/wave_schedule.tres" id="15"]
+[ext_resource type="PackedScene" path="res://scenes/entities/station_core.tscn" id="16"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="17"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
@@ -57,57 +54,31 @@ config = ExtResource("3")
 
 [node name="PlayController" type="Node" parent="."]
 script = ExtResource("11")
-grid = NodePath("../GridManager")
-deck = NodePath("../DeckManager")
-economy = NodePath("../EconomyManager")
+grid_path = NodePath("../GridManager")
+deck_path = NodePath("../DeckManager")
+economy_path = NodePath("../EconomyManager")
 config = ExtResource("3")
 
 [node name="EconomyManager" type="Node" parent="."]
-script = ExtResource("14")
+script = ExtResource("12")
 config = ExtResource("3")
 
 [node name="DayEffects" type="Node" parent="."]
-script = ExtResource("15")
-economy = NodePath("../EconomyManager")
+script = ExtResource("13")
+economy_path = NodePath("../EconomyManager")
 
 [node name="WaveManager" type="Node" parent="."]
-script = ExtResource("18")
-schedule = ExtResource("19")
+script = ExtResource("14")
+schedule = ExtResource("15")
 layout = ExtResource("6")
-grid = NodePath("../GridManager")
-core = NodePath("../StationCore")
+grid_path = NodePath("../GridManager")
+core_path = NodePath("../StationCore")
 
-[node name="StationCore" parent="." instance=ExtResource("20")]
-grid = NodePath("../GridManager")
+[node name="StationCore" parent="." instance=ExtResource("16")]
+grid_path = NodePath("../GridManager")
 layout = ExtResource("6")
 config = ExtResource("3")
 
-[node name="ResourcesBar" parent="." instance=ExtResource("16")]
-offset_left = 8.0
-offset_top = 8.0
-
-[node name="SunsetView" parent="." instance=ExtResource("17")]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="HandView" parent="." instance=ExtResource("12")]
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -48.0
-offset_bottom = -4.0
-alignment = 1
-
-[node name="DraftView" parent="." instance=ExtResource("13")]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="StartButton" type="Button" parent="."]
-offset_left = 240.0
-offset_top = 160.0
-offset_right = 400.0
-offset_bottom = 200.0
-text = "Начать забег"
+[node name="HUD" parent="." instance=ExtResource("17")]
+config = ExtResource("3")
+schedule = ExtResource("15")

@@ -3,10 +3,14 @@ class_name PlayController extends Node
 ## — карта из руки + клетка → оплата → CardEntity на сетке;
 ## — размещённая карта + свободная клетка → оплата перемещения → grid.move.
 
-@export var grid: GridManager
-@export var deck: DeckManager
-@export var economy: EconomyManager
+@export var grid_path: NodePath  # Node-экспорты ручных .tscn не резолвятся — путь + get_node
+@export var deck_path: NodePath
+@export var economy_path: NodePath
 @export var config: RunConfig
+
+var grid: GridManager = null
+var deck: DeckManager = null
+var economy: EconomyManager = null
 
 var _selected_card: CardResource = null  # карта из руки
 var _selected_entity: CardEntity = null  # размещённая карта (для перемещения)
@@ -15,6 +19,10 @@ var _entity_scene: PackedScene = preload("res://scenes/entities/card_entity.tscn
 
 
 func _ready() -> void:
+	if grid_path != NodePath(""):
+		grid = get_node(grid_path) as GridManager
+		deck = get_node(deck_path) as DeckManager
+		economy = get_node(economy_path) as EconomyManager
 	EventBus.hand_card_selected.connect(_on_hand_card_selected)
 	EventBus.grid_cell_confirmed.connect(_on_grid_cell_confirmed)
 	EventBus.grid_selection_cancelled.connect(_clear_selection)

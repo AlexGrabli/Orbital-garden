@@ -5,8 +5,11 @@ class_name WaveManager extends Node
 
 @export var schedule: WaveSchedule
 @export var layout: GridLayout
-@export var grid: GridManager  # для рукопашки врагов
-@export var core: StationCore  # цель движения врагов
+@export var grid_path: NodePath  # для рукопашки врагов (путь + get_node, см. StationCore)
+@export var core_path: NodePath  # цель движения врагов
+
+var grid: GridManager = null
+var core: StationCore = null
 
 var _queue: Array = []  # [{time, enemy, serial}]
 var _elapsed: float = 0.0
@@ -18,6 +21,9 @@ var _enemy_scene: PackedScene = preload("res://scenes/entities/enemy_entity.tscn
 
 
 func _ready() -> void:
+	if grid_path != NodePath(""):
+		grid = get_node(grid_path) as GridManager
+		core = get_node(core_path) as StationCore
 	EventBus.night_started.connect(_on_night_started)
 	EventBus.dawn_started.connect(_on_dawn_started)
 	EventBus.run_ended.connect(_on_run_ended)

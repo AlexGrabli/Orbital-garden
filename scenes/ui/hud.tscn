@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/resources_bar.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hand_view.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/ui/draft_view.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/ui/sunset_view.tscn" id="5"]
+
+[node name="HUD" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1")
+
+[node name="SafeMargins" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Layout" type="VBoxContainer" parent="SafeMargins"]
+
+[node name="TopBar" type="HBoxContainer" parent="SafeMargins/Layout"]
+
+[node name="DayLabel" type="Label" parent="SafeMargins/Layout/TopBar"]
+text = "День 1 из 12"
+
+[node name="PhaseLabel" type="Label" parent="SafeMargins/Layout/TopBar"]
+text = "Меню"
+
+[node name="ForecastLabel" type="Label" parent="SafeMargins/Layout/TopBar"]
+size_flags_horizontal = 3
+
+[node name="ResourcesBar" parent="SafeMargins/Layout/TopBar" instance=ExtResource("2")]
+
+[node name="CoreLabel" type="Label" parent="SafeMargins/Layout/TopBar"]
+text = "Ядро 20/20"
+
+[node name="StartButton" type="Button" parent="SafeMargins/Layout/TopBar"]
+visible = false
+custom_minimum_size = Vector2(72, 24)
+text = "Начать забег"
+
+[node name="EndDayButton" type="Button" parent="SafeMargins/Layout/TopBar"]
+visible = false
+custom_minimum_size = Vector2(64, 24)
+text = "К ночи"
+
+[node name="PauseButton" type="Button" parent="SafeMargins/Layout/TopBar"]
+custom_minimum_size = Vector2(40, 24)
+text = "II"
+
+[node name="Spacer" type="Control" parent="SafeMargins/Layout"]
+size_flags_vertical = 3
+
+[node name="BottomBar" type="HBoxContainer" parent="SafeMargins/Layout"]
+alignment = 1
+
+[node name="HandView" parent="SafeMargins/Layout/BottomBar" instance=ExtResource("3")]
+
+[node name="DraftView" parent="." instance=ExtResource("4")]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SunsetView" parent="." instance=ExtResource("5")]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PauseOverlay" type="CenterContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="PauseOverlay"]
+
+[node name="Box" type="VBoxContainer" parent="PauseOverlay/Panel"]
+
+[node name="Title" type="Label" parent="PauseOverlay/Panel/Box"]
+text = "Пауза"
+
+[node name="ResumeButton" type="Button" parent="PauseOverlay/Panel/Box"]
+custom_minimum_size = Vector2(96, 24)
+text = "Продолжить"

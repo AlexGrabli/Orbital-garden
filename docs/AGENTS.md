@@ -26,8 +26,13 @@ Roguelite deck-building + tower defense + cozy farm. Движок: **Godot 4.x, 
 * Задача 5 — ресурсы и экономика дня: **выполнена** (`EconomyManager`, `DayEffects` — утренний сбор generate/convert, оплата размещения/перемещения в `PlayController` (free_move у стены), ставка заката `SunsetView` с AFK-дефолтом РОСТ, `ResourcesBar`, тест `tests/economy_test.gd` зелёный).
 * Задача 6 — wave manager: **выполнена** (`EnemyResource`/`SpawnEntry`/`WaveScenario`/`WaveSchedule`, враги .tres, 3 рукописные волны + расписание с клампом, `WaveManager` + `EnemyEntity`, тест `tests/wave_test.gd` зелёный).
 * Задача 7 — auto-battle минимум: **выполнена** (`StationCore` с HP из RunConfig, движение/рукопашка/прорыв у врагов, `NightEffects` — damage/heal/ночной convert, `night_completed` — ранняя зачистка ночи, тест `tests/battle_test.gd` зелёный).
-* Задача 8 — HUD (текущая).
-* Далее по docs/03: сохранение.
+* Задача 8 — HUD: **выполнена** (`hud.tscn` — CanvasLayer ALWAYS, safe area через `DisplayServer.get_display_safe_area`, день/фаза/прогноз/HP Ядра/пауза; HandView/DraftView/SunsetView/ResourcesBar внутри; старт забега — кнопка HUD на фазе меню; тест `tests/hud_test.gd` зелёный).
+* Задача 9 — сохранение (текущая).
+* Далее по docs/03: headless-скелет-тест (задача 10).
+
+## Известные долги (не блокеры)
+
+* **D-pad/стик двигают и курсор сетки, и UI-фокус одновременно** — принято в задаче 8; явная маршрутизация режимов (геймплей/UI) — Фаза 4.
 
 ## Команды
 
@@ -68,6 +73,9 @@ tests/       docs/
 * Enum в GDScript 4 не callable: `Terrain(x)` не компилируется — приведение через таблицу значений.
 * Типизированные `Array[...]` в экспортах нельзя присваивать из неподписанных литералов в `-s` раннерах — только наполнять через `.append()`.
 * Группы ищутся через `get_nodes_in_group()` на `SceneTree`, а не на `root`.
+* Автозагрузы (EventBus, RunState) нельзя `queue_free()` при чистке дерева в тестах — это не тестовые узлы.
+* Мгновенные переходы фаз (`night→dawn→day` за кадр) нельзя ловить опросом `current_id` между кадрами — собирать лог через сигнал `phase_changed`.
+* Подключение к сигналу **во время его эмиссии** не доставляет эмиссию новому подписчику: состояние фаз читать через флаги `RunState` (например, `night_active`), события — через сигналы `EventBus`.
 
 ## Стиль кода
 
